@@ -1,12 +1,14 @@
 import PromptModel from '@models/PromptModel'
 import { connectToDB } from '@utils/database'
 
-export const GET = async req => {
+export const GET = async (req, { params }) => {
+   console.log('/api/users/:id/posts')
    try {
       await connectToDB()
 
-      const prompts = await PromptModel.find()
-         .sort({ createdAt: -1 })
+      const prompts = await PromptModel.find({
+         creator: params.id,
+      })
          .populate('creator')
          .lean()
 
